@@ -1,20 +1,19 @@
 const StationManager = {
-  addStation() {
-    const station = {
+  addStation(){
+    ProjectManager.currentProject.stations.push({
       name: "New Station",
       tracks: []
-    };
-    ProjectManager.currentProject.stations.push(station);
-    UI.renderStations();
+    });
+    UI.renderStations(); // render once on add
   },
 
-  deleteStation(index) {
+  deleteStation(index){
     ProjectManager.currentProject.stations.splice(index, 1);
     UI.renderStations();
   },
 
-  renameStation(index, newName) {
+  renameStation(index, newName){
+    // Update data only; DO NOT re-render here (prevents focus loss)
     ProjectManager.currentProject.stations[index].name = newName;
-    UI.renderStations();
   }
 };

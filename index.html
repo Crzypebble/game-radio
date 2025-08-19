@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Radio Project Manager</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,22 +10,24 @@
   <div id="app">
     <h1>🎵 Radio Project Manager</h1>
 
-    <div class="controls">
-      <button onclick="ProjectManager.newProject()">New Project</button>
-      <button onclick="ProjectManager.saveProject()">Save Project</button>
-      <button onclick="ProjectManager.loadProject()">Load Project</button>
+    <div class="toolbar">
+      <button onclick="ProjectManager.newProject()">🆕 New Project</button>
+      <button onclick="ProjectManager.saveProject()">💾 Save Project</button>
+      <button onclick="ProjectManager.loadProject()">📂 Load Project</button>
     </div>
 
-    <div id="project-info">
-      <h2 id="project-name">No project loaded</h2>
+    <section class="project-card">
+      <label>Project Name</label>
       <input id="project-name-input" placeholder="Enter project name" />
-    </div>
+    </section>
 
-    <div class="stations">
-      <h3>Stations</h3>
+    <section class="stations-card">
+      <div class="stations-header">
+        <h2>Stations</h2>
+        <button onclick="StationManager.addStation()">➕ Add Station</button>
+      </div>
       <div id="station-list"></div>
-      <button onclick="StationManager.addStation()">+ Add Station</button>
-    </div>
+    </section>
   </div>
 
   <script src="projectManager.js"></script>
@@ -34,4 +36,3 @@
   <script src="ui.js"></script>
 </body>
 </html>
-

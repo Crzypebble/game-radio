@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Collaborative Music Project</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #eee;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1a0000;
+      padding: 15px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #ff1a1a;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .section {
+      background: #111;
+      border: 1px solid #400000;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      color: #ff3333;
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #eee;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #800000;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #b30000;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 5px 0;
+      background: #1a1a1a;
+      padding: 8px;
+      border: 1px solid #333;
+      border-radius: 5px;
+    }
+
+    audio {
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎵 Collaborative Music Project</h1>
+  </header>
+  <main>
+    <!-- Create new project -->
+    <div class="section">
+      <h2>Create Project</h2>
+      <label for="projectName">Project Name:</label>
+      <input id="projectName" type="text" placeholder="Enter project name"/>
+      <button onclick="createProject()">Create</button>
+    </div>
+
+    <!-- Add station -->
+    <div class="section" id="stationSection" style="display:none;">
+      <h2>Add Station</h2>
+      <label for="stationName">Station Name:</label>
+      <input id="stationName" type="text" placeholder="e.g. Rock Central"/>
+
+      <label for="stationGenre">Genre:</label>
+      <input id="stationGenre" type="text" placeholder="e.g. Rock, Pop, EDM"/>
+
+      <button onclick="addStation()">Add Station</button>
+      <ul id="stationList"></ul>
+    </div>
+
+    <!-- Add song -->
+    <div class="section" id="songSection" style="display:none;">
+      <h2>Add Song</h2>
+      <label for="songTitle">Song Title:</label>
+      <input id="songTitle" type="text" placeholder="e.g. Thunderstruck"/>
+
+      <label for="songArtist">Artist:</label>
+      <input id="songArtist" type="text" placeholder="e.g. AC/DC"/>
+
+      <label for="songUrl">Song URL / Roblox Asset ID:</label>
+      <input id="songUrl" type="text" placeholder="https://... or rbxassetid://..."/>
+
+      <label for="stationSelect">Assign to Station:</label>
+      <select id="stationSelect"></select>
+
+      <button onclick="addSong()">Add Song</button>
+      <ul id="songList"></ul>
+    </div>
+
+    <!-- Preview Player -->
+    <div class="section" id="playerSection" style="display:none;">
+      <h2>Preview Player</h2>
+      <p><strong id="nowPlaying">Nothing playing</strong></p>
+      <audio id="audioPlayer" controls></audio>
+    </div>
+  </main>
+
+  <script>
+    let project = null;
+    let stations = [];
+    let songs = [];
+
+    function createProject() {
+      const name = document.getElementById("projectName").value.trim();
+      if (!name) {
+        alert("Please enter a project name");
+        return;
+      }
+      project = { name };
+      document.getElementById("stationSection").style.display = "block";
+      document.getElementById("songSection").style.display = "block";
+      document.getElementById("playerSection").style.display = "block";
+      alert(`Project "${name}" created!`);
+    }
+
+    function addStation() {
+      const name = document.getElementById("stationName").value.trim();
+      const genre = document.getElementById("stationGenre").value.trim();
+      if (!name || !genre) {
+        alert("Please enter station name and genre");
+        return;
+      }
+      const station = { name, genre };
+      stations.push(station);
+
+      const li = document.createElement("li");
+      li.textContent = `${station.name} (${station.genre})`;
+      document.getElementById("stationList").appendChild(li);
+
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      document.getElementById("stationSelect").appendChild(option);
+
+      document.getElementById("stationName").value = "";
+      document.getElementById("stationGenre").value = "";
+    }
+
+    function addSong() {
+      const title = document.getElementById("songTitle").value.trim();
+      const artist = document.getElementById("songArtist").value.trim();
+      const url = document.getElementById("songUrl").value.trim();
+      const station = document.getElementById("stationSelect").value;
+
+      if (!title || !artist || !url || !station) {
+        alert("Please fill out all song fields");
+        return;
+      }
+
+      const song = { title, artist, url, station };
+      songs.push(song);
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${song.title} - ${song.artist} 
+        <em>[${song.station}]</em>
+        <button onclick="playSong('${song.url}','${song.title}','${song.artist}')">▶</button>
+      `;
+      document.getElementById("songList").appendChild(li);
+
+      document.getElementById("songTitle").value = "";
+      document.getElementById("songArtist").value = "";
+      document.getElementById("songUrl").value = "";
+    }
+
+    function playSong(url, title, artist) {
+      const audio = document.getElementById("audioPlayer");
+      audio.src = url;
+      audio.play();
+      document.getElementById("nowPlaying").textContent = `Now Playing: ${title} - ${artist}`;
+    }
+  </script>
+</body>
+</html>

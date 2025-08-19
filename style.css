@@ -1,0 +1,44 @@
+body {
+  background-color: #0a0a0a;
+  color: #ff1a1a;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ff3333;
+}
+
+button {
+  background-color: #1a1a1a;
+  color: #ff3333;
+  border: 2px solid #ff3333;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff3333;
+  color: #0a0a0a;
+}
+
+input {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #ff3333;
+  padding: 5px;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.station, .track {
+  border: 1px solid #ff3333;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+}
